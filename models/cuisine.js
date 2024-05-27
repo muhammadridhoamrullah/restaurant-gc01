@@ -50,10 +50,7 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: {
           msg : 'Price harus diisi!'
         },
-        min: {
-          args: 0,
-          msg : 'Minimal input 0'
-        }
+        min: 0
       }
     },
     imgUrl: {

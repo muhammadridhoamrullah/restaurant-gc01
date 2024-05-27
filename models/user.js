@@ -47,11 +47,11 @@ module.exports = (sequelize, DataTypes) => {
         },
         notEmpty: {
           msg : 'Password harus diisi!'
+        },
+        len: {
+          args: [5],
+          msg : 'Minamal 5 karakter'
         }
-      },
-      len: {
-        args: [5],
-        msg : 'Minamal 5 karakter'
       }
     },
     role: {
