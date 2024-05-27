@@ -1,0 +1,18 @@
+[
+    {
+        "name": "Ayam Gulai",
+        "description": "Ayam dikasih gulai",
+        "price": 15000,
+        "imgUrl": "https://i.ytimg.com/vi/qSUb_JIQGW0/maxresdefault.jpg",
+        "categoryId": 1,
+        "authorId": 1
+    },
+    {
+        "name": "Ayam Balado",
+        "description": "Ayam dikasih gulai",
+        "price": 15000,
+        "imgUrl": "https://asset.kompas.com/crops/puSCmWekgKRyE5cRP8IWHhIgTsU=/0x0:1000x667/750x500/data/photo/2023/02/22/63f567b4ab9d0.jpeg",
+        "categoryId": 2,
+        "authorId": 1
+    }
+]

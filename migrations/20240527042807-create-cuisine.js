@@ -29,6 +29,7 @@ module.exports = {
         },
         onUpdate: 'cascade',
         onUpdate: 'cascade'
+        
       },
       authorId: {
         type: Sequelize.INTEGER,
