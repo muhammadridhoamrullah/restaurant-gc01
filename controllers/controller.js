@@ -1,4 +1,3 @@
-const { where } = require("sequelize");
 const { Cuisine, User, Category } = require("../models/");
 
 class Controller {
@@ -246,6 +245,48 @@ class Controller {
           message: "Error not found",
         });
       }
+    }
+  }
+
+  static async register(req, res) {
+    try {
+      let { email, password, phoneNumber, address, username } = req.body;
+      let regisUser = await User.create({
+        email,
+        password,
+        phoneNumber,
+        address,
+        username,
+      });
+
+      //   res.send("jalan bosku");
+      res.status(201).json({
+        id: regisUser.id,
+        email: regisUser.email,
+      });
+    } catch (error) {
+      if (
+        error.name === "SequelizeValidationError" ||
+        error.name === "SequelizeUniqueConstraintError"
+      ) {
+        let errors = error.errors.map((el) => {
+          return el.message;
+        });
+        res.status(400).json({ errors });
+      } else {
+        res.status(500).json({
+          message: "Internal Server Error",
+        });
+      }
+    }
+  }
+
+  static async login(req, res) {
+    try {
+    } catch (error) {
+      res.status(500).json({
+        message: "Internal Server Error",
+      });
     }
   }
 }
