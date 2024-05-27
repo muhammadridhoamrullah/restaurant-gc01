@@ -1,3 +1,5 @@
+const { comparePassword } = require("../helper/bcrypt");
+const { signToken } = require("../helper/jwt");
 const { Cuisine, User, Category } = require("../models/");
 
 class Controller {
@@ -283,10 +285,40 @@ class Controller {
 
   static async login(req, res) {
     try {
-    } catch (error) {
-      res.status(500).json({
-        message: "Internal Server Error",
+      let { email, password } = req.body;
+
+      if (!email || !password) {
+        throw { name: "EMAIL_PASSWORD_REQUIRED" };
+      }
+
+      let user = await User.findOne({
+        where: {
+          email,
+        },
       });
+
+      if (!user) {
+        throw { name: "USERNOTFOUND" };
+      }
+
+      const comparePass = comparePassword(password, user.password);
+      if (!comparePass) {
+        throw { name: "UNATHORIZED" };
+      }
+
+      const token = signToken({
+        id: user.id,
+      });
+
+      res.status(200).json({
+        access_token: token,
+      });
+    } catch (error) {
+      console.log(error);
+      res.send(error);
+      //   res.status(500).json({
+      //     message: "Internal Server Error",
+      //   });
     }
   }
 }
