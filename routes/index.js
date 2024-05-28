@@ -3,6 +3,7 @@ const router = require("express").Router();
 
 const authentication = require("../middlewares/authentication");
 const authorization = require("../middlewares/authorization");
+const errorHandler = require("../middlewares/errorHandler");
 
 // -------------REGISTER & LOGIN--------------
 router.post("/add-user", Controller.register);
@@ -33,5 +34,7 @@ router.get("/categories", Controller.getCategories);
 router.put("/categories/:id", Controller.editCategory);
 
 router.delete("/categories/:id", Controller.deleteCategory);
+
+router.use(errorHandler);
 
 module.exports = router;

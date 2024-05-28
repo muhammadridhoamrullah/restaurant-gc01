@@ -3,7 +3,7 @@ const { signToken } = require("../helper/jwt");
 const { Cuisine, User, Category } = require("../models/");
 
 class Controller {
-  static async addCuisine(req, res) {
+  static async addCuisine(req, res, next) {
     try {
       const { name, description, price, imgUrl, categoryId, authorId } =
         req.body;
@@ -17,20 +17,11 @@ class Controller {
       });
       res.status(201).json(data);
     } catch (error) {
-      if (error.name === "SequelizeValidationError") {
-        let errors = error.errors.map((el) => {
-          return el.message;
-        });
-        res.status(400).json({ errors });
-      } else {
-        res.status(500).json({
-          message: "Internal Server Error",
-        });
-      }
+      next(error);
     }
   }
 
-  static async getCuisines(req, res) {
+  static async getCuisines(req, res, next) {
     try {
       const cuisines = await Cuisine.findAll({
         include: {
@@ -40,13 +31,11 @@ class Controller {
       });
       res.status(200).json(cuisines);
     } catch (error) {
-      res.status(500).json({
-        message: "Internal Server Error",
-      });
+      next(error);
     }
   }
 
-  static async getCuisineById(req, res) {
+  static async getCuisineById(req, res, next) {
     try {
       let { id } = req.params;
       let data = await Cuisine.findByPk(id);
@@ -55,15 +44,11 @@ class Controller {
       }
       res.status(200).json(data);
     } catch (error) {
-      if (error.name === "DATANOTFOUND") {
-        res.status(404).json({
-          message: "Error not found!",
-        });
-      }
+      next(error);
     }
   }
 
-  static async editCuisine(req, res) {
+  static async editCuisine(req, res, next) {
     try {
       let { id } = req.params;
       const { name, description, price, imgUrl, categoryId, authorId } =
@@ -85,24 +70,11 @@ class Controller {
 
       res.status(200).json(data);
     } catch (error) {
-      if (error.name === "SequelizeValidationError") {
-        let errors = error.errors.map((el) => {
-          return el.message;
-        });
-        res.status(400).json({ errors });
-      } else if (error.name === "DATANOTFOUND") {
-        res.status(404).json({
-          message: "Error not found",
-        });
-      } else {
-        res.status(500).json({
-          message: "Internal Server Error",
-        });
-      }
+      next(error);
     }
   }
 
-  static async deleteCuisine(req, res) {
+  static async deleteCuisine(req, res, next) {
     try {
       let { id } = req.params;
       let dataCuisine = await Cuisine.findByPk(id);
@@ -118,49 +90,30 @@ class Controller {
         message: `${dataCuisine.name} success to delete`,
       });
     } catch (error) {
-      if (error.name === "DATANOTFOUND") {
-        res.status(404).json({
-          message: "Error not found",
-        });
-      } else {
-        res.status(500).json({
-          message: "Internal Server Error",
-        });
-      }
+      next(error);
     }
   }
 
-  static async addCategory(req, res) {
+  static async addCategory(req, res, next) {
     try {
       let { name } = req.body;
       let addCat = await Category.create({ name });
       res.status(201).json(addCat);
     } catch (error) {
-      if (error.name === "SequelizeValidationError") {
-        let errors = error.errors.map((el) => {
-          return el.message;
-        });
-        res.status(400).json({ errors });
-      } else {
-        res.status(500).json({
-          message: "Internal Server Error",
-        });
-      }
+      next(error);
     }
   }
 
-  static async getCategories(req, res) {
+  static async getCategories(req, res, next) {
     try {
       let data = await Category.findAll();
       res.status(200).json(data);
     } catch (error) {
-      res.status(500).json({
-        message: "Internal Server Error",
-      });
+      next(error);
     }
   }
 
-  static async editCategory(req, res) {
+  static async editCategory(req, res, next) {
     try {
       let { id } = req.params;
       let { name } = req.body;
@@ -179,24 +132,11 @@ class Controller {
       );
       res.status(200).json(updateCat);
     } catch (error) {
-      if (error.name === "SequelizeValidationError") {
-        let errors = error.errors.map((el) => {
-          return el.message;
-        });
-        res.status(400).json({ errors });
-      } else if (error.name === "DATANOTFOUND") {
-        res.status(404).json({
-          message: "Error not found",
-        });
-      } else {
-        res.status(500).json({
-          message: "Internal Server Error",
-        });
-      }
+      next(error);
     }
   }
 
-  static async deleteCategory(req, res) {
+  static async deleteCategory(req, res, next) {
     try {
       let { id } = req.params;
       let dataCat = await Category.findByPk(id);
@@ -213,30 +153,20 @@ class Controller {
         message: `${dataCat.name} success to delete`,
       });
     } catch (error) {
-      if (error.name === "DATANOTFOUND") {
-        res.status(404).json({
-          message: "Error not found",
-        });
-      } else {
-        res.status(500).json({
-          message: "Internal Server Error",
-        });
-      }
+      next(error);
     }
   }
 
-  static async getCuisinesPub(req, res) {
+  static async getCuisinesPub(req, res, next) {
     try {
       let data = await Cuisine.findAll();
       res.status(200).json(data);
     } catch (error) {
-      res.status(500).json({
-        message: "Internal Server Error",
-      });
+      next(error);
     }
   }
 
-  static async getCuisinesPubById(req, res) {
+  static async getCuisinesPubById(req, res, next) {
     try {
       let { id } = req.params;
       let dataCuisine = await Cuisine.findByPk(id);
@@ -246,16 +176,11 @@ class Controller {
 
       res.status(200).json(dataCuisine);
     } catch (error) {
-      if (error.name === "DATANOTFOUND") {
-        res.status(404).json({
-          message: "Error not found",
-        });
-      } else {
-      }
+      next(error);
     }
   }
 
-  static async register(req, res) {
+  static async register(req, res, next) {
     try {
       let { email, password, phoneNumber, address, username } = req.body;
       let regisUser = await User.create({
@@ -272,23 +197,11 @@ class Controller {
         email: regisUser.email,
       });
     } catch (error) {
-      if (
-        error.name === "SequelizeValidationError" ||
-        error.name === "SequelizeUniqueConstraintError"
-      ) {
-        let errors = error.errors.map((el) => {
-          return el.message;
-        });
-        res.status(400).json({ errors });
-      } else {
-        res.status(500).json({
-          message: "Internal Server Error",
-        });
-      }
+      next(error);
     }
   }
 
-  static async login(req, res) {
+  static async login(req, res, next) {
     try {
       let { email, password } = req.body;
 
@@ -319,11 +232,7 @@ class Controller {
         access_token: token,
       });
     } catch (error) {
-      console.log(error);
-      res.send(error);
-      //   res.status(500).json({
-      //     message: "Internal Server Error",
-      //   });
+      next(error);
     }
   }
 }

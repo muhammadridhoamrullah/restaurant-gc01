@@ -3,10 +3,10 @@ const authorization = async (req, res, next) => {
     if (req.user.role === "Admin") {
       next();
     } else {
-      throw { name: "UNAUTHORIZED" };
+      throw { name: "FORBIDDEN" };
     }
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 
