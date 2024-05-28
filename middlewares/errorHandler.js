@@ -9,7 +9,7 @@ function errorHandler(error, req, res, next) {
     });
   } else if (
     error.name === "SequelizeValidationError" ||
-    error.name === "SequelizeConstraintUniqueError"
+    error.name === "SequelizeUniqueConstraintError"
   ) {
     let errors = error.errors.map((el) => {
       return el.message;
