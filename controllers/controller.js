@@ -191,11 +191,19 @@ class Controller {
         username,
       });
 
+      let tampilUser = await User.findOne(
+        {
+          attributes: { exclude: "password" },
+        },
+        {
+          where: {
+            email,
+          },
+        }
+      );
+
       //   res.send("jalan bosku");
-      res.status(201).json({
-        id: regisUser.id,
-        email: regisUser.email,
-      });
+      res.status(201).json(tampilUser);
     } catch (error) {
       next(error);
     }
