@@ -5,6 +5,11 @@ const authentication = require("../middlewares/authentication");
 const authorization = require("../middlewares/authorization");
 const errorHandler = require("../middlewares/errorHandler");
 
+const multer = require("multer");
+const storage = multer.memoryStorage();
+
+const upload = multer({ storage });
+
 // -------------REGISTER & LOGIN--------------
 router.post("/add-user", Controller.register);
 router.post("/login", Controller.login);
@@ -34,6 +39,12 @@ router.get("/categories", Controller.getCategories);
 router.put("/categories/:id", Controller.editCategory);
 
 router.delete("/categories/:id", Controller.deleteCategory);
+
+router.patch(
+  "/cuisineImage/:id",
+  upload.single("picture"),
+  Controller.uploadImage
+);
 
 router.use(errorHandler);
 

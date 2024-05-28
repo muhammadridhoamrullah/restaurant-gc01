@@ -2,6 +2,14 @@ const { comparePassword } = require("../helper/bcrypt");
 const { signToken } = require("../helper/jwt");
 const { Cuisine, User, Category } = require("../models/");
 
+const cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 class Controller {
   static async addCuisine(req, res, next) {
     try {
@@ -239,6 +247,31 @@ class Controller {
       res.status(200).json({
         access_token: token,
       });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async uploadImage(req, res, next) {
+    try {
+      const encode = req.file.buffer.toString("base64");
+
+      const base64Data = `data:${req.file.mimetype};base64,${encode}`;
+
+      const upload = await cloudinary.uploader.upload(base64Data);
+
+      await Cuisine.update(
+        {
+          imgUrl: upload.secure_url,
+        },
+        {
+          where: {
+            id: req.params.id,
+          },
+        }
+      );
+
+      res.status(200).json({ message: "Upload berhasil!" });
     } catch (error) {
       next(error);
     }
