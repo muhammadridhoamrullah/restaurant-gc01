@@ -50,11 +50,16 @@ class Controller {
     try {
       let { id } = req.params;
       let data = await Cuisine.findByPk(id);
+      if (!data) {
+        throw { name: "DATANOTFOUND" };
+      }
       res.status(200).json(data);
     } catch (error) {
-      res.status(404).json({
-        message: "Error not found!",
-      });
+      if (error.name === "DATANOTFOUND") {
+        res.status(404).json({
+          message: "Error not found!",
+        });
+      }
     }
   }
 
@@ -225,7 +230,6 @@ class Controller {
       let data = await Cuisine.findAll();
       res.status(200).json(data);
     } catch (error) {
-      console.log(error);
       res.status(500).json({
         message: "Internal Server Error",
       });
@@ -243,9 +247,10 @@ class Controller {
       res.status(200).json(dataCuisine);
     } catch (error) {
       if (error.name === "DATANOTFOUND") {
-        res.status(400).json({
+        res.status(404).json({
           message: "Error not found",
         });
+      } else {
       }
     }
   }
