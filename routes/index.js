@@ -26,6 +26,6 @@ router.put("/categories/:id", Controller.editCategory);
 router.delete("/categories/:id", Controller.deleteCategory);
 
 // -------------REGISTER & LOGIN--------------
-router.post("/register", Controller.register);
-router.post("/login", Controller.login)
+router.post("/add-user", Controller.register);
+router.post("/login", Controller.login);
 module.exports = router;
