@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const { comparePassword } = require("../helper/bcrypt");
 const { signToken } = require("../helper/jwt");
 const { Cuisine, User, Category } = require("../models/");
@@ -167,7 +168,41 @@ class Controller {
 
   static async getCuisinesPub(req, res, next) {
     try {
-      let data = await Cuisine.findAll();
+      let { filter, search, sort, page } = req.query;
+      let option = {};
+      if (filter) {
+        option.where = { categoryId: filter };
+      }
+
+      if (search) {
+        option.where = {
+          name: {
+            [Op.iLike]: `%${search}%`,
+          },
+        };
+      }
+
+      if (sort) {
+        const ordering = sort[0] === "-" ? "DESC" : "ASC";
+        const sortBy = ordering === "DESC" ? sort.slice(1) : sort;
+        option.order = [[sortBy, ordering]];
+      }
+
+      let limit = 10;
+      let pageNumber = 1;
+      if (page) {
+        if (page.size) {
+          limit = page.size;
+          option.limit = limit;
+        }
+
+        if (page.number) {
+          pageNumber = page.number;
+          option.offset = limit * (pageNumber - 1);
+        }
+      }
+
+      let data = await Cuisine.findAll(option);
       res.status(200).json(data);
     } catch (error) {
       next(error);

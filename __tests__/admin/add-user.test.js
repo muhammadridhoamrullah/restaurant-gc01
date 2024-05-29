@@ -112,4 +112,28 @@ describe("POST /add-user", () => {
     expect(response.body).toBeInstanceOf(Object);
     expect(response.body).toHaveProperty("errors", ["Password harus diisi!"]);
   });
+
+  test("Email diberikan string kosong", async () => {
+    const body = {
+      username: "ridhoamrullah",
+      email: "",
+      password: "1234567890",
+      role: "Staff",
+      phoneNumber: "085363508580",
+      address: "Jalan Pemuda",
+    };
+
+    const response = await request(app)
+      .post("/add-user")
+      .send(body)
+      .set("authorization", `Bearer ${accessTokenAdmin}`);
+
+    // console.log(response.body, "INI ERROR");
+    expect(response.status).toBe(400);
+    expect(response.body).toBeInstanceOf(Object);
+    expect(response.body).toHaveProperty("errors", [
+      "Email harus diisi!",
+      "Email harus valid!",
+    ]);
+  });
 });
