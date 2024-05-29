@@ -1,11 +1,11 @@
 const request = require("supertest");
-const app = require("../app");
-const { sequelize } = require("../models/index");
-const { User } = require("../models/index");
-const { signToken, verifyToken } = require("../helper/jwt");
+const app = require("../../app");
+const { sequelize } = require("../../models/index");
+const { User } = require("../../models/index");
+// const { signToken, verifyToken } = require("../helper/jwt");
 
 // router.post("/login", Controller.login);
-let accessToken;
+// let accessToken;
 beforeAll(async () => {
   const data = {
     username: "ridhoamrullah",

@@ -3,6 +3,7 @@ const router = require("express").Router();
 
 const authentication = require("../middlewares/authentication");
 const authorization = require("../middlewares/authorization");
+const authorizationAdmin = require("../middlewares/authorizationAdmin");
 const errorHandler = require("../middlewares/errorHandler");
 
 const multer = require("multer");
@@ -10,8 +11,8 @@ const storage = multer.memoryStorage();
 
 const upload = multer({ storage });
 
-// -------------REGISTER & LOGIN--------------
-router.post("/add-user", Controller.register);
+// -------------LOGIN--------------
+
 router.post("/login", Controller.login);
 
 // --------------PUB------------------
@@ -29,6 +30,8 @@ router.get("/cuisines/:id", Controller.getCuisineById);
 router.put("/cuisines/:id", authorization, Controller.editCuisine);
 
 router.delete("/cuisines/:id", authorization, Controller.deleteCuisine);
+
+router.post("/add-user", authorizationAdmin, Controller.register);
 
 // --------------CATEGORY---------------
 
