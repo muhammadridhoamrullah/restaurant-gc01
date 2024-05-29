@@ -1,7 +1,8 @@
 function errorHandler(error, req, res, next) {
+  // console.log(error, " <<<< error terbaru");
   if (error.name === "UNAUTHORIZED" || error.name === "JsonWebTokenError") {
     res.status(401).json({
-      message: "Please login first!",
+      message: "EMAIL OR PASSWORD INVALID",
     });
   } else if (error.name === "FORBIDDEN") {
     res.status(403).json({
@@ -15,6 +16,10 @@ function errorHandler(error, req, res, next) {
       return el.message;
     });
     res.status(400).json({ errors });
+  } else if (error.name === "EMAIL_PASSWORD_REQUIRED") {
+    res.status(400).json({ message: "EMAIL OR PASSWORD IS REQUIRED" });
+  } else if (error.name === "USERNOTFOUND") {
+    res.status(404).json({ message: "USER NOT FOUND" });
   } else {
     res.status(500).json;
   }

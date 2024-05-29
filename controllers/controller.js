@@ -237,7 +237,7 @@ class Controller {
 
       const comparePass = comparePassword(password, user.password);
       if (!comparePass) {
-        throw { name: "UNATHORIZED" };
+        throw { name: "UNAUTHORIZED" };
       }
 
       const token = signToken({
