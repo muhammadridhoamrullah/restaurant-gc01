@@ -71,4 +71,45 @@ describe("POST /add-user", () => {
     expect(response.body).toHaveProperty("createdAt", response.body.createdAt);
     expect(response.body).toHaveProperty("updatedAt", response.body.updatedAt);
   });
+
+  //FAILED
+  test("Email tidak diberikan / tidak diinput", async () => {
+    const body = {
+      username: "ridhoamrullah",
+      password: "1234567890",
+      role: "Staff",
+      phoneNumber: "085363508580",
+      address: "Jalan Pemuda",
+    };
+
+    const response = await request(app)
+      .post("/add-user")
+      .send(body)
+      .set("authorization", `Bearer ${accessTokenAdmin}`);
+
+    // console.log(response.body, "<<< HAI");
+    expect(response.status).toBe(400);
+    expect(response.body).toBeInstanceOf(Object);
+    expect(response.body).toHaveProperty("errors", ["Email harus diisi!"]);
+  });
+
+  test("Password tidak diberikan / tidak diinput", async () => {
+    const body = {
+      username: "ridhoamrullah",
+      email: "ridhoamrullah99@gmail.com",
+      role: "Staff",
+      phoneNumber: "085363508580",
+      address: "Jalan Pemuda",
+    };
+
+    const response = await request(app)
+      .post("/add-user")
+      .send(body)
+      .set("authorization", `Bearer ${accessTokenAdmin}`);
+
+    // console.log(response.body, "<< ini erorr");
+    expect(response.status).toBe(400);
+    expect(response.body).toBeInstanceOf(Object);
+    expect(response.body).toHaveProperty("errors", ["Password harus diisi!"]);
+  });
 });
