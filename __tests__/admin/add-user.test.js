@@ -59,7 +59,16 @@ describe("POST /add-user", () => {
       .send(body)
       .set("authorization", `Bearer ${accessTokenAdmin}`);
 
-    console.log(response.body, "<<< bodyyyy add user");
+    // console.log(response.body, "<<< bodyyyy add user");
     expect(response.status).toBe(201);
+    expect(response.body).toBeInstanceOf(Object);
+    expect(response.body).toHaveProperty("id", expect.any(Number));
+    expect(response.body).toHaveProperty("username", body.username);
+    expect(response.body).toHaveProperty("email", body.email);
+    expect(response.body).toHaveProperty("role", body.role);
+    expect(response.body).toHaveProperty("phoneNumber", body.phoneNumber);
+    expect(response.body).toHaveProperty("address", body.address);
+    expect(response.body).toHaveProperty("createdAt", response.body.createdAt);
+    expect(response.body).toHaveProperty("updatedAt", response.body.updatedAt);
   });
 });
