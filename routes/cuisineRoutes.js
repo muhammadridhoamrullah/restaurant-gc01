@@ -1,17 +1,19 @@
 const Controller = require("../controllers/controller");
+
 // const authentication = require("../middlewares/authentication");
 const errorHandler = require("../middlewares/errorHandler");
 const router = require("express").Router();
 const authorization = require("../middlewares/authorization");
+const ControllerCuisine = require("../controllers/controllerCuisine");
 
-router.post("/", Controller.addCuisine);
-router.get("/", Controller.getCuisines);
+router.post("/", ControllerCuisine.addCuisine);
+router.get("/", ControllerCuisine.getCuisines);
 
-router.get("/:id", Controller.getCuisineById);
+router.get("/:id", ControllerCuisine.getCuisineById);
 
-router.put("/:id", authorization, Controller.editCuisine);
+router.put("/:id", authorization, ControllerCuisine.editCuisine);
 
-router.delete("/:id", authorization, Controller.deleteCuisine);
+router.delete("/:id", authorization, ControllerCuisine.deleteCuisine);
 
 router.use(errorHandler);
 
