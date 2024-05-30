@@ -1,4 +1,4 @@
-const { Op } = require("sequelize");
+const { Op, where } = require("sequelize");
 const { comparePassword } = require("../helper/bcrypt");
 const { signToken } = require("../helper/jwt");
 const { Cuisine, User, Category } = require("../models/");
@@ -169,17 +169,15 @@ class Controller {
   static async getCuisinesPub(req, res, next) {
     try {
       let { filter, search, sort, page } = req.query;
-      let option = {};
+      let option = {
+        where: {},
+      };
       if (filter) {
-        option.where = { categoryId: filter };
+        option.where.categoryId = filter;
       }
 
       if (search) {
-        option.where = {
-          name: {
-            [Op.iLike]: `%${search}%`,
-          },
-        };
+        option.where.name = { [Op.iLike]: `%${search}%` };
       }
 
       if (sort) {
