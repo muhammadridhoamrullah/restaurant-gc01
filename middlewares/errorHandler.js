@@ -1,12 +1,16 @@
 function errorHandler(error, req, res, next) {
   // console.log(error, " <<<< error terbaru");
-  if (error.name === "UNAUTHORIZED" || error.name === "JsonWebTokenError") {
+  if (error.name === "UNAUTHORIZED") {
     res.status(401).json({
       message: "EMAIL OR PASSWORD INVALID",
     });
+  } else if (error.name === "JsonWebTokenError") {
+    res.status(401).json({
+      message: "INVALID TOKEN",
+    });
   } else if (error.name === "FORBIDDEN") {
     res.status(403).json({
-      message: "You have no access!",
+      message: "YOU HAVE NO ACCESS",
     });
   } else if (
     error.name === "SequelizeValidationError" ||
@@ -20,6 +24,8 @@ function errorHandler(error, req, res, next) {
     res.status(400).json({ message: "EMAIL OR PASSWORD IS REQUIRED" });
   } else if (error.name === "USERNOTFOUND") {
     res.status(404).json({ message: "USER NOT FOUND" });
+  } else if (error.name === "DATANOTFOUND") {
+    res.status(404).json({ message: "DATA NOT FOUND" });
   } else {
     res.status(500).json;
   }
