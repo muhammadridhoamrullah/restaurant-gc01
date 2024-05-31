@@ -15,8 +15,18 @@ class Controller {
   static async getCuisinesPub(req, res, next) {
     try {
       let { filter, search, sort, page } = req.query;
+      let limit = 10;
+      let pageNumber = 1;
+      if (page.size) {
+        limit = page.size;
+      }
+      if (page.number) {
+        pageNumber = page.number;
+      }
       let option = {
         where: {},
+        limit,
+        offset: limit * (pageNumber - 1),
       };
       if (filter) {
         option.where.categoryId = filter;
@@ -30,20 +40,6 @@ class Controller {
         const ordering = sort[0] === "-" ? "DESC" : "ASC";
         const sortBy = ordering === "DESC" ? sort.slice(1) : sort;
         option.order = [[sortBy, ordering]];
-      }
-
-      let limit = 10;
-      let pageNumber = 1;
-      if (page) {
-        if (page.size) {
-          limit = page.size;
-          option.limit = limit;
-        }
-
-        if (page.number) {
-          pageNumber = page.number;
-          option.offset = limit * (pageNumber - 1);
-        }
       }
 
       let data = await Cuisine.findAll(option);

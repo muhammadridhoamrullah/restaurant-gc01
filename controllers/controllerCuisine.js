@@ -6,15 +6,14 @@ const { Cuisine, User } = require("../models/");
 class ControllerCuisine {
   static async addCuisine(req, res, next) {
     try {
-      const { name, description, price, imgUrl, categoryId, authorId } =
-        req.body;
+      const { name, description, price, imgUrl, categoryId } = req.body;
       const data = await Cuisine.create({
         name,
         description,
         price,
         imgUrl,
         categoryId,
-        authorId,
+        authorId: req.user.id,
       });
       res.status(201).json(data);
     } catch (error) {
