@@ -104,7 +104,9 @@ describe("PUT /cuisines/:id", () => {
       .send(body)
       .set("authorization", `Bearer ${accessTokenAdmin}`);
 
-    // console.log(response, "error put");
+    // console.log(response.body, "error put");
     expect(response.status).toBe(200);
+    expect(response.body).toBeInstanceOf(Array);
+    // expect(response.body).toHaveProperty(1);
   });
 });
