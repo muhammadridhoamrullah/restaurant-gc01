@@ -109,4 +109,43 @@ describe("PUT /cuisines/:id", () => {
     expect(response.body).toBeInstanceOf(Array);
     // expect(response.body).toHaveProperty(1);
   });
+
+  test("Gagal menjalankan fitur karena belum login", async () => {
+    const params = 1;
+    const body = {
+      name: "Ikan Salai Asap",
+      description: "Ikan salai yang di asapi",
+      price: 20000,
+      imgUrl: "ikansalai.com",
+      categoryId: params,
+      authorId: 2,
+    };
+    const response = await request(app).put(`/cuisines/${params}`).send(body);
+
+    // console.log(response.body, "<< anjay gemink");
+    expect(response.status).toBe(401);
+    expect(response.body).toBeInstanceOf(Object);
+    expect(response.body).toHaveProperty("message", "PLEASE LOGIN FIRST");
+  });
+
+  test("Gagal menjalankan fitur karena token yang diberikan tidak valid", async () => {
+    const params = 1;
+    const body = {
+      name: "Ikan Salai Asap",
+      description: "Ikan salai yang di asapi",
+      price: 20000,
+      imgUrl: "ikansalai.com",
+      categoryId: params,
+      authorId: 2,
+    };
+    const response = await request(app)
+      .put(`/cuisines/${params}`)
+      .send(body)
+      .set("authorization", `Bearer iniTokenSalah`);
+
+    console.log(response.body, "<< error token salah");
+    expect(response.status).toBe(401);
+    expect(response.body).toBeInstanceOf(Object);
+    expect(response.body).toHaveProperty("message", "INVALID TOKEN");
+  });
 });
