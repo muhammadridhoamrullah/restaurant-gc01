@@ -108,8 +108,8 @@ describe("POST /cuisines", () => {
 
   test("Gagal ketika request body tidak sesuai(validation required)", async () => {
     const body = {
-      name: "Talua Barendo",
-      descriptiong: "Talua karitiang", // <<< ini yang salah
+      name: "", // <<< ini yang salah
+      description: "Talua karitiang",
       price: 40000,
       imgUrl: "phototaluarbarendo.jpg",
       categoryId: categoryId,
@@ -120,7 +120,9 @@ describe("POST /cuisines", () => {
       .send(body)
       .set("authorization", `Bearer ${accessToken}`);
 
-    console.log(response.body);
+    // console.log(response.body, "<<<anjay");
     expect(response.status).toBe(400);
+    expect(response.body).toBeInstanceOf(Object);
+    expect(response.body).toHaveProperty("errors", ["Name harus diisi!"]);
   });
 });
