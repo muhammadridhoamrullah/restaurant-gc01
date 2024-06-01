@@ -88,8 +88,20 @@ afterAll(async () => {
   });
 });
 
-describe("PUT /cuisines/:id", () => {
-  test("Berhasil mengupdate data entitas utama berdasarkan params id yang diberikan", async () => {
+describe("DELETE /cuisines/:id", () => {
+  test("Gagal menjalankan fitur ketika Staff menghapus yang bukan miliknya", async () => {
+    const params = 1;
+    const response = await request(app)
+      .delete(`/cuisines/${params}`)
+      .set("authorization", `Bearer ${accessTokenStaff2}`);
+
+    // console.log(response.body, "<<< error staff bukan miliknya");
+    expect(response.status).toBe(403);
+    expect(response.body).toBeInstanceOf(Object);
+    expect(response.body).toHaveProperty("message", "YOU HAVE NO ACCESS");
+  });
+
+  test("Berhasil menghapus data entitas utama berdasarkan params id", async () => {
     const params = 1;
     const body = {
       name: "Ikan Salai Asap",
@@ -99,15 +111,19 @@ describe("PUT /cuisines/:id", () => {
       categoryId: params,
       authorId: 2,
     };
+
     const response = await request(app)
-      .put(`/cuisines/${params}`)
+      .delete(`/cuisines/${params}`)
       .send(body)
       .set("authorization", `Bearer ${accessTokenAdmin}`);
 
-    // console.log(response.body, "error put");
+    // console.log(response.body, "<<< res delete");
     expect(response.status).toBe(200);
-    expect(response.body).toBeInstanceOf(Array);
-    // expect(response.body).toHaveProperty(1);
+    expect(response.body).toBeInstanceOf(Object);
+    expect(response.body).toHaveProperty(
+      "message",
+      "Ikan Salai success to delete"
+    );
   });
 
   test("Gagal menjalankan fitur karena belum login", async () => {
@@ -120,7 +136,9 @@ describe("PUT /cuisines/:id", () => {
       categoryId: params,
       authorId: 2,
     };
-    const response = await request(app).put(`/cuisines/${params}`).send(body);
+    const response = await request(app)
+      .delete(`/cuisines/${params}`)
+      .send(body);
 
     // console.log(response.body, "<< anjay gemink");
     expect(response.status).toBe(401);
@@ -139,7 +157,7 @@ describe("PUT /cuisines/:id", () => {
       authorId: 2,
     };
     const response = await request(app)
-      .put(`/cuisines/${params}`)
+      .delete(`/cuisines/${params}`)
       .send(body)
       .set("authorization", `Bearer iniTokenSalah`);
 
@@ -152,6 +170,7 @@ describe("PUT /cuisines/:id", () => {
   test("Gagal karena id entity yang dikirim tidak terdapat di database", async () => {
     const params = 1000; // id yang salah
     const body = {
+      id: 1,
       name: "Ikan Salai Asap",
       description: "Ikan salai yang di asapi",
       price: 20000,
@@ -160,7 +179,7 @@ describe("PUT /cuisines/:id", () => {
       authorId: 2,
     };
     const response = await request(app)
-      .put(`/cuisines/${params}`)
+      .delete(`/cuisines/${params}`)
       .send(body)
       .set("authorization", `Bearer ${accessTokenAdmin}`);
 
@@ -168,48 +187,5 @@ describe("PUT /cuisines/:id", () => {
     expect(response.status).toBe(404);
     expect(response.body).toBeInstanceOf(Object);
     expect(response.body).toHaveProperty("message", "DATA NOT FOUND");
-  });
-
-  test("Gagal menjalankan fitur ketika Staff mengedit yang bukan miliknya", async () => {
-    const params = 1; // id yang salah
-    const body = {
-      name: "Ikan Salai Asap",
-      description: "Ikan salai yang di asapi",
-      price: 20000,
-      imgUrl: "ikansalai.com",
-      categoryId: params,
-      authorId: 2,
-    };
-    const response = await request(app)
-      .put(`/cuisines/${params}`)
-      .send(body)
-      .set("authorization", `Bearer ${accessTokenStaff2}`); // ini token user ke 3
-
-    console.log(response.body, "<<< error staff bukan miliknya");
-    expect(response.status).toBe(403);
-    expect(response.body).toBeInstanceOf(Object);
-    expect(response.body).toHaveProperty("message", "YOU HAVE NO ACCESS");
-  });
-
-  test("Gagal ketika request body yang dikirimkan tidak sesuai", async () => {
-    const params = 1; // id yang salah
-    const body = {
-      name: "", // inputan body salah
-      description: "Ikan salai yang di asapi",
-      price: 20000,
-      imgUrl: "ikansalai.com",
-      categoryId: params,
-      authorId: 1,
-    };
-
-    const response = await request(app)
-      .put(`/cuisines/${params}`)
-      .send(body)
-      .set("authorization", `Bearer ${accessTokenAdmin}`);
-
-    // console.log(response.body, "<< error body salah");
-    expect(response.status).toBe(400);
-    expect(response.body).toBeInstanceOf(Object);
-    expect(response.body).toHaveProperty("errors", ["Name harus diisi!"]);
   });
 });
