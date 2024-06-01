@@ -2,7 +2,7 @@ function errorHandler(error, req, res, next) {
   console.log(error, " <<<< error terbaru");
   if (error.name === "UNAUTHORIZED") {
     res.status(401).json({
-      message: "INVALID USERNAME/PASSWORD, PLEASE LOGIN FIRST",
+      message: "PLEASE LOGIN FIRST",
     });
   } else if (error.name === "JsonWebTokenError") {
     res.status(401).json({
@@ -26,6 +26,8 @@ function errorHandler(error, req, res, next) {
     res.status(404).json({ message: "USER NOT FOUND" });
   } else if (error.name === "DATANOTFOUND") {
     res.status(404).json({ message: "DATA NOT FOUND" });
+  } else if (error.name === "INVALIDUSERANDPASS") {
+    res.status(401).json({ message: "INVALID EMAIL OR PASSWORD" });
   } else {
     res.status(500).json({
       message: "Internal Server Error",

@@ -106,12 +106,12 @@ class Controller {
       });
 
       if (!user) {
-        throw { name: "USERNOTFOUND" };
+        throw { name: "INVALIDUSERANDPASS" };
       }
 
       const comparePass = comparePassword(password, user.password);
       if (!comparePass) {
-        throw { name: "UNAUTHORIZED" };
+        throw { name: "INVALIDUSERANDPASS" };
       }
 
       const token = signToken({
