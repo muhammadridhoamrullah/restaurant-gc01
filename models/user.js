@@ -51,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
           },
           len: {
             args: [5],
-            msg: "Minamal 5 karakter",
+            msg: "Minimal 5 karakter",
           },
         },
       },
@@ -64,7 +64,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           notNull: {
-            msg: "Phone Numbe harus diisi!",
+            msg: "Phone Number harus diisi!",
           },
           notEmpty: {
             msg: "Phone Number harus diisi!",
