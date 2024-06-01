@@ -2,7 +2,7 @@ function errorHandler(error, req, res, next) {
   console.log(error, " <<<< error terbaru");
   if (error.name === "UNAUTHORIZED") {
     res.status(401).json({
-      message: "PLEASE LOGIN FIRST",
+      message: "INVALID USERNAME/PASSWORD, PLEASE LOGIN FIRST",
     });
   } else if (error.name === "JsonWebTokenError") {
     res.status(401).json({
