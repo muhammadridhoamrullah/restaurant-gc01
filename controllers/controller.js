@@ -15,7 +15,7 @@ class Controller {
   static async getCuisinesPub(req, res, next) {
     try {
       let { filter, search, sort, page } = req.query;
-      let limit = 5;
+      let limit = 10;
       let pageNumber = 1;
       if (page) {
         if (page.size) {
