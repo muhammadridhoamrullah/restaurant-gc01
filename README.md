@@ -5,67 +5,88 @@
 > Tuliskan API Docs kamu di sini
 
 List of available endpoints:
-post /cuisines
-get /cuisines
+
+<!-- --LOGIN DAN REGISTER -->
+
+post /register
+post /login
+
+<!-- --LOGIN DAN REGISTER -->
+
+<!-- --PUB -->
 
 get /cuisines/pub
 get /cuisines/:id/pub
 
+<!-- --PUB -->
+
+<!-- --CUISINES -->
+
+post /cuisines
+get /cuisines
+
 get /cuisines/:id
-
 put /cuisines/:id
-
 delete /cuisines/:id
 
+<!-- --CUISINES -->
+
+<!-- --CATEGORIES -->
+
 post /categories
-
 get /categories
-
 put /categories/:id
-
 delete /categories/:id
 
-1. POST /cuisines
-   Request:
+<!-- --CATEGORIES -->
+
+<!-- --UPLOAD IMAGE -->
+
+patch /cuisineImage/:id
+
+<!-- --UPLOAD IMAGE -->
+
+1. POST /register
+
+Request:
+
+headers:
+
+{
+"Authorization": "Bearer ${accesToken}"
+}
 
 body:
 
 {
-"name" : "string",
-"description": "string",
-"price": "integer",
-"imgUrl": "string",
-"categoryId": "integer",
-"authorId": "integer"
+"email": "ridhoamrullah99@gmail.com",
+"password": "1234567890",
+"phoneNumber: "085363508580",
+"address": "Jalan Pemuda",
+"username": "ridhoamrullah"
 }
 
 Response: (201 - Created)
 
 {
-
-"id": "integer",
-"name": "string",
-"description": "string",
-"price": "integer",
-"imgUrl": "string",
-"categoryId": "integer",
-"authorId": "integer",
-"updatedAt": "date",
-"createdAt": "date"
-
+"id": 1,
+"email": "ridhoamrullah99@gmail.com",
+"phoneNumber: "085363508580",
+"address": "Jalan Pemuda",
+"username": "ridhoamrullah",
+"createdAt": "2024-06-01T01:33:15.785Z",
+"updatedAt": "2024-06-01T01:33:15.785Z"
 }
 
-Response: (400 - Bad Request)
+Response( 400 - Bad Request)
 
 {
-
     "errors": [
-        "Name harus diisi!",
-        "Description harus diisi!",
-        "Price harus diisi!",
-        "imgUrl harus diisi!",
-        "Category ID harus diisi!",
-        "Author ID harus diisi!"
+        "Email harus diisi!",
+        "Email harus valid!",
+        "Password harus diisi!",
+        "Minamal 5 karakter",
+        "Phone Number harus diisi!",
+        "Address harus diisi!"
     ]
-
 }

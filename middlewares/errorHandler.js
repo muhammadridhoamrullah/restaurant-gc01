@@ -19,7 +19,7 @@ function errorHandler(error, req, res, next) {
     let errors = error.errors.map((el) => {
       return el.message;
     });
-    res.status(400).json({ errors });
+    res.status(400).json({ message: errors[0] });
   } else if (error.name === "EMAIL_PASSWORD_REQUIRED") {
     res.status(400).json({ message: "EMAIL OR PASSWORD IS REQUIRED" });
   } else if (error.name === "USERNOTFOUND") {
