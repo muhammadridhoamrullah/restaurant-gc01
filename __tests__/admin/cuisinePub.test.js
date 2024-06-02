@@ -337,7 +337,7 @@ describe("GET /cuisines/pub", () => {
       `/cuisines/pub?page[size]=${size}&page[number]=${number}`
     );
 
-    console.log(response.body, "<<< pake filter");
+    // console.log(response.body, "<<< pake filter");
     expect(response.status).toBe(200);
     expect(response.body).toBeInstanceOf(Array);
     response.body.forEach((item) => {

@@ -84,9 +84,12 @@ describe("POST /login", () => {
     const response = await request(app).post("/login").send(body);
 
     // console.log(response.body, "<<< woiwww");
-    expect(response.status).toBe(404);
+    expect(response.status).toBe(401);
     expect(response.body).toBeInstanceOf(Object);
-    expect(response.body).toHaveProperty("message", "USER NOT FOUND");
+    expect(response.body).toHaveProperty(
+      "message",
+      "INVALID EMAIL OR PASSWORD"
+    );
   });
 
   test("password diberikan salah / tidak match", async () => {
@@ -101,7 +104,7 @@ describe("POST /login", () => {
     expect(response.body).toBeInstanceOf(Object);
     expect(response.body).toHaveProperty(
       "message",
-      "EMAIL OR PASSWORD INVALID"
+      "INVALID EMAIL OR PASSWORD"
     );
   });
 });

@@ -123,6 +123,6 @@ describe("POST /cuisines", () => {
     // console.log(response.body, "<<<anjay");
     expect(response.status).toBe(400);
     expect(response.body).toBeInstanceOf(Object);
-    expect(response.body).toHaveProperty("errors", ["Name harus diisi!"]);
+    expect(response.body).toHaveProperty("message", "Name harus diisi!");
   });
 });
