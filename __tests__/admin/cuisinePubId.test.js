@@ -3,7 +3,6 @@ const app = require("../../app");
 const { sequelize } = require("../../models/index");
 const { User, Cuisine, Category } = require("../../models/index");
 const { signToken } = require("../../helper/jwt");
-const { name } = require("ejs");
 
 let accessTokenAdmin;
 let accessTokenStaff;
