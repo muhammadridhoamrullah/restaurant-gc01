@@ -14,39 +14,40 @@ cloudinary.config({
 class Controller {
   static async getCuisinesPub(req, res, next) {
     try {
-      let { filter, search, sort, page } = req.query;
+      let { filter, search, sort, size, number } = req.query;
       let limit = 10;
       let pageNumber = 1;
-      if (page) {
-        if (page.size) {
-          limit = page.size;
-        }
-        if (page.number) {
-          pageNumber = page.number;
-        }
+
+      // Validasi page size dan page number
+      if (size && !isNaN(size)) {
+        limit = parseInt(size);
+      }
+      if (number && !isNaN(number)) {
+        pageNumber = parseInt(number);
       }
 
-      let option = {
+      let options = {
         where: {},
         limit,
         offset: limit * (pageNumber - 1),
       };
+
       if (filter) {
-        option.where.categoryId = filter;
+        options.where.categoryId = filter;
       }
 
       if (search) {
-        option.where.name = { [Op.iLike]: `%${search}%` };
+        options.where.name = { [Op.iLike]: `%${search}%` };
       }
 
       if (sort) {
-        const ordering = sort[0] === "-" ? "DESC" : "ASC";
-        const sortBy = ordering === "DESC" ? sort.slice(1) : sort;
-        option.order = [[sortBy, ordering]];
+        const order = sort[0] === "-" ? "DESC" : "ASC";
+        const sortBy = order === "DESC" ? sort.slice(1) : sort;
+        options.order = [[sortBy, order]];
       }
 
-      let data = await Cuisine.findAll(option);
-      res.status(200).json(data);
+      let { count, rows: data } = await Cuisine.findAndCountAll(options);
+      res.status(200).json({ data, totalItems: count });
     } catch (error) {
       next(error);
     }

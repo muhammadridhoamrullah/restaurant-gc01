@@ -1,7 +1,7 @@
 const Controller = require("../controllers/controller");
 const router = require("express").Router();
 const authentication = require("../middlewares/authentication");
-// const authorization = require("../middlewares/authorization");
+const authorization = require("../middlewares/authorization");
 const authorizationAdmin = require("../middlewares/authorizationAdmin");
 const errorHandler = require("../middlewares/errorHandler");
 
@@ -38,6 +38,7 @@ router.use("/categories", categoriesRouter);
 
 router.patch(
   "/cuisineImage/:id",
+  authorization,
   upload.single("picture"),
   Controller.uploadImage
 );

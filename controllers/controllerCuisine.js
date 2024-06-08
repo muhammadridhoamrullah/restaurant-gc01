@@ -28,6 +28,7 @@ class ControllerCuisine {
           model: User,
           attributes: { exclude: "password" },
         },
+        order: [['createdAt', 'DESC']], // Menambahkan parameter order untuk mengurutkan berdasarkan createdAt dengan urutan terbaru
       });
       res.status(200).json(cuisines);
     } catch (error) {
