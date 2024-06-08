@@ -30,6 +30,7 @@ class Controller {
         where: {},
         limit,
         offset: limit * (pageNumber - 1),
+        include: [{ model: Category }, { model: User }],
       };
 
       if (filter) {
@@ -56,7 +57,9 @@ class Controller {
   static async getCuisinesPubById(req, res, next) {
     try {
       let { id } = req.params;
-      let dataCuisine = await Cuisine.findByPk(id);
+      let dataCuisine = await Cuisine.findByPk(id, {
+        include: [{ model: Category }, { model: User }],
+      });
       if (!dataCuisine) {
         throw { name: "DATANOTFOUND" };
       }
