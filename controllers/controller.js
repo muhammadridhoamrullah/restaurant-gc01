@@ -5,6 +5,9 @@ const { Cuisine, User, Category } = require("../models/");
 
 const cloudinary = require("cloudinary").v2;
 
+const { OAuth2Client } = require("google-auth-library");
+const client = new OAuth2Client();
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -150,6 +153,41 @@ class Controller {
       );
 
       res.status(200).json({ message: "Upload berhasil!" });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async loginByGoogle(req, res, next) {
+    try {
+      const { google_token } = req.headers;
+      const ticket = await client.verifyIdToken({
+        idToken: google_token,
+        audience: process.env.CLIENTID,
+      });
+
+      // console.log(ticket);
+      const payload = ticket.getPayload();
+
+      const [user, created] = await User.findOrCreate({
+        where: { email: payload.email },
+        defaults: {
+          username: payload.name,
+          email: payload.email,
+          password: String(Math.random() * 1000), // ini bebas
+        },
+      });
+      // console.log(user, ">>>>>", created);
+
+      const access_token = signToken({
+        id: user.id,
+      });
+
+      const status = created ? 201 : 200;
+
+      res.status(status).json({ access_token });
+
+      // const userid = payload["sub"];
     } catch (error) {
       next(error);
     }

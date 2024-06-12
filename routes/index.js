@@ -16,6 +16,9 @@ const upload = multer({ storage });
 // -------------LOGIN dan REGISTER--------------
 
 router.post("/login", Controller.login);
+
+router.post("/login-google", Controller.loginByGoogle);
+
 router.post(
   "/add-user",
   authentication,

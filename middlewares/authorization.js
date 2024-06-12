@@ -7,9 +7,7 @@ const authorization = async (req, res, next) => {
       throw { name: "DATANOTFOUND" };
     }
 
-    if (req.user.role === "Admin") {
-      next();
-    } else if (req.user.id == dataCu.authorId) {
+    if (req.user.id == dataCu.authorId) {
       next();
     } else {
       throw { name: "FORBIDDEN" };
