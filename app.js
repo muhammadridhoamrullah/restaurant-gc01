@@ -4,17 +4,16 @@ if (process.env.NODE_ENV !== "production") {
 const express = require("express");
 const router = require("./routes/index");
 const app = express();
-const port = process.env.PORT || 3000;
 const cors = require("cors");
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Routing
 app.use(router);
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
-
-module.exports = app;
+// Ekspor aplikasi Express untuk Vercel
+module.exports = (req, res) => {
+  app(req, res);
+};
